@@ -38,7 +38,7 @@ print_help() {
 
   if [ -n "$usage" ]; then
     echo "$usage"
-    
+
     local summary="$(summary "$file")"
     [ -n "$summary" ] && echo "Summary: $summary"
 
@@ -54,15 +54,15 @@ command_path() {
 }
 
 summary() {
-  sed -n "s/^# Summary: \(.*\)/\1/p" "$1"
+  sed -n "s/^[#;];* Summary: \(.*\)/\1/p" "$1"
 }
 
 usage() {
-  sed -n "s/^# \(Usage: .*\)/\1/p" "$1"
+  sed -n "s/^[#;];* \(Usage: .*\)/\1/p" "$1"
 }
 
 help() {
-  awk '/^[^#]/{p=0} /^# Help:/{p=1} p' "$1" | sed "s/^# Help: //;s/^# //;s/^#//"
+  awk '/^[^#;]/{p=0} /^[#;];* Help:/{p=1} p' "$1" | sed "s/^[#;];* Help: //;s/^[#;];* //;s/^[#;];*//"
 }
 
 truncate() {
@@ -77,9 +77,16 @@ truncate() {
   fi
 }
 
-# Provide sub completions
+# Provide sub completions, only for documented commands
 if [ "$1" = "--complete" ]; then
-  exec "sub-commands"
+  for command in $(sub-commands); do
+    file="$(command_path "$command")"
+    if [ -n "$file" ]; then
+      if [ -n "$(usage $file)" ]; then
+        echo "$command"
+      fi
+    fi
+  done
   exit
 fi
 

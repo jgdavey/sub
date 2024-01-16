@@ -1,14 +1,42 @@
 #!/usr/bin/env bash
 set -e
 
+command_path() {
+  command -v "sub-$command" || command -v "sub-sh-$command" || true
+}
+
+summary() {
+  sed -n "s/^[#;];* Summary: \(.*\)/\1/p" "$1"
+}
+
+# Only zsh completions calls this
+print_summaries() {
+  for command in $(sub-commands); do
+    local file="$(command_path "$command")"
+    if [ ! -h "$file" ]; then
+      local summary="$(summary "$file")"
+      if [ -n "$summary" ]; then
+        printf "%s[%s]\n" "$command" "$summary"
+      else
+        echo "$command"
+      fi
+    fi
+  done
+}
+
 COMMAND="$1"
+if [ "$COMMAND" = "--commands" ]; then
+  print_summaries
+  exit
+fi
+
 if [ -z "$COMMAND" ]; then
   echo "usage: sub completions COMMAND [arg1 arg2...]" >&2
   exit 1
 fi
 
 COMMAND_PATH="$(command -v "sub-$COMMAND")"
-if grep -i "^# provide sub completions" "$COMMAND_PATH" >/dev/null; then
+if grep "\--complete" "$COMMAND_PATH" >/dev/null; then
   shift
   exec "$COMMAND_PATH" --complete "$@"
 fi

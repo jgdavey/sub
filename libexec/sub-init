@@ -58,8 +58,13 @@ fi
 echo "export PATH=\"\${PATH}:${_SUB_ROOT}/bin\""
 
 case "$shell" in
-bash | zsh )
-  echo "source \"$root/completions/sub.${shell}\""
+bash )
+  echo "source \"${_SUB_ROOT}/completions/bash_completions.sh\""
+  ;;
+zsh )
+  echo "fpath=(\$fpath ${_SUB_ROOT}/completions)"
+  echo "autoload -U _sub"
+  echo "compdef _sub sub"
   ;;
 esac
 
