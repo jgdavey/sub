@@ -21,7 +21,14 @@ abs_dirname() {
 
 libexec_path="$(abs_dirname "$0")"
 export _SUB_ROOT="$(abs_dirname "$libexec_path")"
-export PATH="${libexec_path}:$PATH"
+
+bin_path="${libexec_path}"
+if [ -d "$PWD/.sub/libexec" ]; then
+  bin_path="${bin_path}:$PWD/.sub/libexec"
+fi
+
+export ORIG_PATH="$PATH"
+export PATH="${bin_path}:${PATH}"
 
 command="$1"
 case "$command" in
