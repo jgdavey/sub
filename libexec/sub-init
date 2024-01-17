@@ -38,7 +38,7 @@ if [ -z "$print" ]; then
     profile='~/.bash_profile'
     ;;
   zsh )
-    profile='~/.zshenv'
+    profile='~/.zprofile'
     ;;
   * )
     profile='your profile'
@@ -94,6 +94,6 @@ bash )
   echo "alias sub=_sub_wrapper"
   ;;
 zsh )
-  echo "sub=_sub_wrapper"
+  echo "sub() { _sub_wrapper \$@ }"
   ;;
 esac
