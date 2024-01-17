@@ -59,7 +59,7 @@ echo "export PATH=\"\${PATH}:${_SUB_ROOT}/bin\""
 
 case "$shell" in
 bash )
-  echo "source \"${_SUB_ROOT}/completions/bash_completions.sh\""
+  echo "source \"${_SUB_ROOT}/completions/sub.bash\""
   ;;
 zsh )
   echo "fpath=(\$fpath ${_SUB_ROOT}/completions)"

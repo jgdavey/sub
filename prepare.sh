@@ -16,7 +16,7 @@ if [ "$NAME" != "sub" ]; then
   rm bin/sub
   mv share/sub share/$SUBNAME
 
-  for file in **/sub* completions/* ; do
+  for file in **/sub* completions/_sub ; do
     sed "s/sub/$SUBNAME/g;s/SUB_ROOT/$ENVNAME/g" "$file" > $(echo $file | sed "s/sub/$SUBNAME/")
     rm $file
   done
