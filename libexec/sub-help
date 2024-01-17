@@ -58,7 +58,7 @@ summary() {
 }
 
 usage() {
-  sed -n "s/^[#;];* \(Usage: .*\)/\1/p" "$1"
+  sed -n "s/^[#;];* \(Usage: .*\)/\1/p" "$1"  | sed "s/\$0/sub/g"
 }
 
 help() {
