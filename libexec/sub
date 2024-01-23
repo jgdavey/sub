@@ -20,13 +20,17 @@ abs_dirname() {
 }
 
 libexec_path="$(abs_dirname "$0")"
-export _SUB_ROOT="$(abs_dirname "$libexec_path")"
-
+_SUB_ROOT="$(abs_dirname "$libexec_path")"
+_LOCAL_SUB_ROOT=
 bin_path="${libexec_path}"
-if [ -d "$PWD/.sub/libexec" ]; then
-  bin_path="${bin_path}:$PWD/.sub/libexec"
+local_root="$PWD/.sub/libexec"
+
+if [ -d "$local_root" ]; then
+  _LOCAL_SUB_ROOT="$(abs_dirname "${local_root}/")"
+  bin_path="${bin_path}:${_LOCAL_SUB_ROOT}"
 fi
 
+export _SUB_ROOT _LOCAL_SUB_ROOT
 export ORIG_PATH="$PATH"
 export PATH="${bin_path}:${PATH}"
 

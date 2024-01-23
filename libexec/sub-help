@@ -9,11 +9,12 @@ print_summaries() {
 
   for command in $(sub-commands); do
     local file="$(command_path "$command")"
+    local indicate_local="$(local_indicator "$file")"
     if [ ! -h "$file" ]; then
       local summary="$(summary "$file")"
       if [ -n "$summary" ]; then
         commands["${#commands[@]}"]="$command"
-        summaries["${#summaries[@]}"]="$summary"
+        summaries["${#summaries[@]}"]="${indicate_local}${summary}"
 
         if [ "${#command}" -gt "$longest_command" ]; then
           longest_command="${#command}"
@@ -51,6 +52,12 @@ print_help() {
 
 command_path() {
   command -v "sub-$command" || command -v "sub-sh-$command" || true
+}
+
+local_indicator() {
+  if [ "$_LOCAL_SUB_ROOT" = "$(dirname $1)" ]; then
+    echo "(local) "
+  fi
 }
 
 summary() {
