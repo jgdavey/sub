@@ -53,13 +53,14 @@ IFS="|"
 cat <<EOS
 _sub_wrapper() {
   local command="\$1"
+  local evaluate=
   if [ "\$#" -gt 0 ]; then
     shift
   fi
 
   case "\$command" in
   ${commands[*]})
-    eval \`sub "sh-\$command" "\$@"\`;;
+    evaluate=\`sub "sh-\$command" "\$@"\` && eval "\${evaluate}" ;;
   *)
     command sub "\$command" "\$@";;
   esac
