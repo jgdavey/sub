@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Usage: $0 new [flags] command
-# Summary: Generate a new subcommand
-# Help: Make a new script that can be run with `sub subcommand`
+# Usage: sub new [flags] command
+# Summary: Generate a new command
+# Help: Make a new script that can be run with `sub command`
 
 set -e
 
@@ -29,8 +29,8 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-subcommand="${1}"
-basename="sub-${subcommand}"
+command="${1}"
+basename="sub-${command}"
 dir=
 
 if [ -n "$local" ]; then
@@ -50,7 +50,7 @@ mkdir -p "${dir}/libexec"
 
 cat > "$filepath" <<-TEMPLATE
 	#!/usr/bin/env bash
-	# Usage: sub $subcommand
+	# Usage: sub $command
 	# Summary: (please add docs here)
 	# Help: (add longer optional help here, that
 	# can be multi-line and include examples)
@@ -61,11 +61,11 @@ TEMPLATE
 chmod +x $filepath
 
 if [ -n "$sh" ]; then
-  sh_filepath="${dir}/libexec/sub-sh-${subcommand}"
+  sh_filepath="${dir}/libexec/sub-sh-${command}"
   cat > "$sh_filepath" <<-TEMPLATE
 	#!/usr/bin/env bash
 	# Call main command
-	output="\$(sub-$subcommand)"
+	output="\$(sub-$command)"
 	echo "OUTPUT FROM MAIN COMMAND: \$output" >&2
 	echo "Any output to stdout gets evaled by the shell" >&2
 	echo "So use stderr redirection to print" >&2
