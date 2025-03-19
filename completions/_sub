@@ -1,12 +1,15 @@
 #compdef sub
 
-local curcontext="$curcontext" state line _opts ret=1
+local context state state_descr line
+local ret=1
 local -a list
 local comps
 
 _arguments -C \
            '1: :->cmds' \
            '*:: :->args' && ret=0
+
+export LASTCOMPWORD="${line[-1]}"
 
 # Special-case some sub-commands
 case "${line[1]}" in
@@ -19,16 +22,21 @@ esac
 # Or use the commands themselves
 case $state in
   cmds)
-    comps="$(sub completions --commands)"
+    comps="$(_call_program sub-cmds sub completions --commands)"
     ;;
   args)
-    comps="$(sub completions $line[@])"
+    comps="$(_call_program sub-args sub completions $line[@])"
     ;;
 esac
 
-list=("${(ps:\n:)comps}")
 
-_values "sub command" "${list[@]}"
+if [[ -z "$comps" ]]; then
+  _message "No completions"
+else
+  list=("${(ps:\n:)comps}")
+
+  _values "sub command" "${list[@]}"
+fi
 
 return ret
 # Local Variables:
