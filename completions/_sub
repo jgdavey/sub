@@ -9,7 +9,7 @@ _arguments -C \
            '1: :->cmds' \
            '*:: :->args' && ret=0
 
-export LASTCOMPWORD="${line[-1]}"
+export COMP_WORD="${line[-1]}"
 
 # Special-case some sub-commands
 case "${line[1]}" in

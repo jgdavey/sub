@@ -40,9 +40,11 @@ if [[ -n "$file_path" ]]; then
   if grep "\--complete" "$file_path" >/dev/null; then
     shift
     args=("$@")
-    if [[ -z "$LASTCOMPWORD" ]]; then
+    if [[ -z "$COMP_WORD" ]]; then
       args+=("")
     fi
+    export COMP_LASTARG="${args[${#args[@]} - 1]}"
+    export COMP_PENULT="${args[${#args[@]} - 2]}"
     exec "$file_path" --complete "${args[@]}"
   fi
 fi
