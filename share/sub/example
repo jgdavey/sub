@@ -1,6 +1,5 @@
 This file is available at $_SUB_ROOT/share/sub/example
 
-here's an example file you could read
-it has stuff in it
-maybe you want some config values
-or even some YAML?
+Here's an example file you could read
+
+You can put whatever in here, or in other share files

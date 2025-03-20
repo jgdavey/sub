@@ -14,9 +14,14 @@ echo "Preparing your '$SUBNAME' sub!"
 
 if [ "$NAME" != "sub" ]; then
   rm bin/sub
+
   mv share/sub share/$SUBNAME
 
-  for file in **/sub* completions/_sub ; do
+  for file in share/$SUBNAME/*; do
+    sed -i.bak "s/sub/$SUBNAME/g;s/SUB_ROOT/$ENVNAME/g" "$file" && rm -f "$file".bak || true
+  done
+
+  for file in libexec/sub* completions/* ; do
     sed "s/sub/$SUBNAME/g;s/SUB_ROOT/$ENVNAME/g" "$file" > $(echo $file | sed "s/sub/$SUBNAME/")
     rm $file
   done
