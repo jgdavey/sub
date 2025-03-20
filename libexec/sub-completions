@@ -43,8 +43,13 @@ if [[ -n "$file_path" ]]; then
     if [[ -z "$COMP_WORD" ]]; then
       args+=("")
     fi
-    export COMP_LASTARG="${args[${#args[@]} - 1]}"
-    export COMP_PENULT="${args[${#args[@]} - 2]}"
+    n=${#args[@]}
+    COMP_LASTARG="${args[$((n - 1))]}"
+    COMP_PENULT=
+    if [[ $n -gt 1 ]]; then
+      COMP_PENULT="${args[$((n - 2))]}"
+    fi
+    export COMP_PENULT COMP_LASTARG
     exec "$file_path" --complete "${args[@]}"
   fi
 fi
