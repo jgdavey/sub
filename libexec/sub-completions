@@ -51,5 +51,7 @@ if [[ -n "$file_path" ]]; then
     fi
     export COMP_PENULT COMP_LASTARG
     exec "$file_path" --complete "${args[@]}"
+  else
+    exit 42
   fi
 fi

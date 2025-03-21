@@ -26,16 +26,20 @@ case $state in
     ;;
   args)
     comps="$(_call_program sub-args sub completions $line[@])"
+    has="$?"
     ;;
 esac
 
-
 if [[ -z "$comps" ]]; then
-  _message "No completions"
+  if [[ "$has" = 42 ]]; then
+    _default # fallback to generic (usually filename) completion
+  else
+    _message "No completions"
+  fi
 else
   list=("${(ps:\n:)comps}")
 
-  _values "sub command" "${list[@]}"
+  _values "sub-command" "${list[@]}"
 fi
 
 return ret
