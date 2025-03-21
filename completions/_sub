@@ -44,6 +44,8 @@ else
   _values "sub-command" "${list[@]}"
 fi
 
+unset COMP_WORD
+
 return ret
 # Local Variables:
 # mode: Shell-Script
